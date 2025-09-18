@@ -1,1 +1,64 @@
-<p>home works!</p>
+<main>
+  <section class="content">
+    <header class="top-content">
+      <h1 class="section-title">Каталог фильмов</h1>
+      <div class="search">
+        <input
+          type="text"
+          [(ngModel)]="searchQuery"
+          placeholder="Поиск фильмов..."
+          (input)="onInputChange()"
+        />
+      </div>
+    </header>
+
+    <section class="films">
+      @if (loading) {
+        <p>Загрузка...</p>
+      }
+
+      @if (error) {
+        <p class="error">{{ error }}</p>
+      }
+
+      @if (movies.length > 0) {
+        <div class="movie-grid">
+          @for (movie of movies; track movie?.imdbID) {
+            <div class="movie-card" (click)="selectMovie(movie)">
+              <img
+                src="{{ movie?.Poster !== 'N/A' ? movie?.Poster : 'placeholder.jpg' }}"
+                alt="{{ movie?.Title }}"
+              />
+              <h2>{{ movie?.Title }}</h2>
+              <p>{{ movie?.Year }}</p>
+            </div>
+          }
+        </div>
+      }
+    </section>
+  </section>
+
+  @if (selectedMovie) {
+    <div class="modal-overlay" (click)="closeModal($event)">
+      <div class="modal-content">
+        <span class="modal-close" (click)="closeModal($event)">✕</span>
+        <div class="modal-body">
+          <div class="modal-info">
+            <h2>{{ selectedMovie.Title }}</h2>
+            <p><strong>Год:</strong> {{ selectedMovie.Year }}</p>
+            <p><strong>Жанр:</strong> {{ selectedMovie.Genre || 'Неизвестно' }}</p>
+            <p><strong>Рейтинг:</strong> {{ selectedMovie.imdbRating || '—' }}</p>
+            <p class="plot">{{ selectedMovie.Plot || 'Описание недоступно' }}</p>
+          </div>
+
+          <div class="modal-poster">
+            <img
+              src="{{ selectedMovie.Poster !== 'N/A' ? selectedMovie.Poster : 'placeholder.jpg' }}"
+              alt="{{ selectedMovie.Title }}"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+  }
+</main>
