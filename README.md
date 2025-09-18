@@ -1,59 +1,165 @@
-# TestAngProjectEffectiveMobile
+1. 
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 20.3.1.
+Когда мы кликаем на элемент, событие идёт по дереву DOM сначала сверху вниз, потом до элемента, на котором произошло действие, а потом обратно вверх. Это три фазы: 
 
-## Development server
+Capturing – событие идёт сверху вниз. 
 
-To start a local development server, run:
+Target – событие достигает того элемента, на котором кликнули. 
 
-```bash
-ng serve
-```
+Bubbling – событие поднимается обратно вверх. 
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+На практике это удобно, например, если навесить обработчик на родителя, чтобы не ставить его на каждый дочерний элемент. А если нужно, чтобы событие не дошло до родителя – можно вызвать stopPropagation() 
 
-## Code scaffolding
+ 
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+2. 
 
-```bash
-ng generate component component-name
-```
+Promise – это такой объект, который говорит: Я что-то делаю и когда закончу, дам результат. Он может быть в трёх состояниях: ожидается, успешно выполнен или ошибка. 
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+Пример: я делаю запрос на сервер, и когда данные приходят – обрабатываю их через .then(), если ошибка – через .catch(). 
 
-```bash
-ng generate --help
-```
+Можно ещё использовать async/await – это как писать обычный код, только асинхронный. 
 
-## Building
+Event Loop – это как очередь задач. JS не ждёт, пока всё выполнится, а ставит асинхронные вещи в очередь, чтобы браузер не зависал. 
 
-To build the project run:
+ 
 
-```bash
-ng build
-```
+ 
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+3. 
 
-## Running unit tests
+ООП – это когда мы строим программу вокруг объектов, которые хранят данные и умеют что-то делать. Представим, что объект – это как реальная вещь, например машина: у неё есть свойства (цвет, марка, скорость) и методы (ехать, тормозить). 
 
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
+Основные принципы: 
 
-```bash
-ng test
-```
+Инкапсуляция 
 
-## Running end-to-end tests
+Это когда мы скрываем внутренние детали объекта, чтобы кто-то случайно их не сломал. 
 
-For end-to-end (e2e) testing, run:
+В JS это можно делать через приватные свойства (#privateProp) или просто через соглашение _property. 
 
-```bash
-ng e2e
-```
+Пример: у объекта Car есть приватное свойство #engineStatus, а снаружи мы можем только запускать метод startEngine(). 
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+Наследование 
 
-## Additional Resources
+Это когда один объект берёт свойства и методы другого и может добавлять свои. 
 
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+В JS это делается через class и extends. 
+
+Пример: есть класс Animal, у него метод makeSound(). Мы создаём класс Dog и наследуем Animal, но makeSound() переопределяем: «Woof!». 
+
+ 
+
+ 
+
+Полиморфизм 
+
+Это когда один метод может работать по-разному у разных объектов. 
+
+Пример: у нас есть метод render() у разных компонентов Angular – у одного он выводит текст, у другого – картинку, но вызываем его одинаково. 
+
+ 
+
+Абстракция 
+
+Это когда мы отделяем что делает объект от как он это делает. 
+
+В JS через TypeScript можно использовать интерфейсы или абстрактные классы. 
+
+Пример: интерфейс IShape с методом draw(), а у Circle и Rectangle своя реализация draw(). 
+
+Почему это важно в Angular: 
+
+Компоненты, сервисы и модели – это все объекты. 
+
+Наследование и полиморфизм помогают переиспользовать код, например, создавать базовый сервис с общими методами для всех API-запросов. 
+
+Инкапсуляция помогает, чтобы внутренние данные компонента не ломали другие части приложения. 
+
+ 
+
+ 
+
+ 
+
+4. 
+
+Когда вводишь URL: 
+
+Разбор URL 
+
+Браузер смотрит: какой протокол (http/https), домен, путь, параметры и якорь. 
+
+Например: https://example.com/page?id=1#section → протокол https, домен example.com, путь /page, параметр id=1, якорь #section. 
+
+DNS lookup 
+
+Браузер узнаёт IP сервера через DNS. Это как телефонная книга: «кто владеет example.com». 
+
+Установка соединения 
+
+Через TCP и TLS (если HTTPS) браузер соединяется с сервером. 
+
+Отправка HTTP-запроса 
+
+Браузер спрашивает сервер: «Дай мне страницу». 
+
+Сервер отвечает HTML, а вместе с ним CSS, JS и другие ресурсы. 
+
+ 
+
+ 
+
+ 
+
+Разбор и рендеринг 
+
+HTML → DOM: строится дерево элементов. 
+
+CSS → CSSOM: строится дерево стилей. 
+
+Render tree: DOM + CSSOM → браузер понимает, как рисовать элементы. 
+
+Layout → Paint → Composite: браузер рисует страницу на экран. 
+
+Выполнение JS 
+
+Скрипты могут изменять DOM, добавлять интерактивность, загружать данные через fetch или Angular сервисы. 
+
+ 
+
+Как ускорить загрузку: 
+
+Кэш браузера и CDN – чтобы файлы приходили быстрее. 
+
+Lazy loading и code splitting – грузим только то, что нужно сразу. 
+
+Сжатие файлов (gzip/brotli) – чтобы меньше данных передавалось. 
+
+HTTP/2 и HTTP/3 – позволяют параллельно загружать несколько ресурсов. 
+
+ 
+
+ 
+
+ 
+
+Возможные проблемы: 
+
+CORS – нельзя просто так запросить данные с чужого сайта без разрешения. 
+
+Безопасность – XSS, CSRF, MITM. Нужно HTTPS и проверка данных. 
+
+Недоступность ресурсов – если сервер упал или заблокирован, страница может не загрузиться. 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
